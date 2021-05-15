@@ -123,29 +123,29 @@ def main(folder_name, concurrency):
 
 
 if __name__ == '__main__':
-    print(os.path.abspath(sys.argv[1]))
-
-    client_main(os.path.abspath(sys.argv[1]), sys.argv[2])
+    # print(os.path.abspath(sys.argv[1]))
+    #
+    # client_main(os.path.abspath(sys.argv[1]), sys.argv[2])
 
     '''
     Testing code on different concurrency levels and generating graph
     '''
-    # import pandas as pd
-    # from matplotlib import pyplot as plt
-    #
-    # list_data = list()
-    # c1 = client_main('dataset_1', 1)
-    # c2 = client_main('dataset_1', 2)
-    # c3 = client_main('dataset_1', 4)
-    # c4 = client_main('dataset_1', 8)
-    # list_data.append(c1)
-    # list_data.append(c2)
-    # list_data.append(c3)
-    # list_data.append(c4)
-    # df = pd.DataFrame(list_data)
-    # # Using scatter plot
-    # plt.scatter(df['concurrency_rate'], df['time_taken'])
-    # plt.title('Concurrency throughput')
-    # plt.ylabel('Time Taken in Seconds')
-    # plt.xlabel('Concurrency rate')
-    # plt.show()
+    import pandas as pd
+    from matplotlib import pyplot as plt
+
+    list_data = list()
+    c1 = client_main('dataset', 1)
+    c2 = client_main('dataset', 2)
+    c3 = client_main('dataset', 4)
+    c4 = client_main('dataset', 8)
+    list_data.append(c1)
+    list_data.append(c2)
+    list_data.append(c3)
+    list_data.append(c4)
+    df = pd.DataFrame(list_data)
+    # Using scatter plot
+    plt.scatter(df['concurrency_rate'], df['time_taken'])
+    plt.title('Concurrency throughput')
+    plt.ylabel('Time Taken in Seconds')
+    plt.xlabel('Concurrency rate')
+    plt.show()

@@ -66,6 +66,12 @@ if __name__ == '__main__':
 
 ![Graph Image](https://github.com/jahanxb/client-server/blob/master/concurrency_graph_with_delay.png?raw=true)
 
+>Here is the final result of the test scale on 100 files ranging from 8-10MB each in size 
+>and running on 1,2,4 and 8 concurrency rate
+
+![Graph Image Latest](https://github.com/jahanxb/client-server/blob/master/concurrency_graph_full.png?raw=true)
+
+Results indicates that the concurrency works better in 2 and 4 workers rate. 
 ## References
 
  - https://medium.com/fintechexplained/advanced-python-concurrency-and-parallelism-82e378f26ced
