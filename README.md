@@ -23,9 +23,11 @@ if __name__ == '__main__':
 ## Server.py
 
 Server.py works as the server to accept files upload and give back response to client. For authentication client passes a string that is hardcoded in server.py to check the client authenticity. 
+Performs both md5, sha256 and pychksum checksums on files
 
 ## Client.py
 Client.py sends the data to the server, it takes two arguments 'folder_destination' and 'concurrency_rate' for sending data to server. The Authentication code is hard coded inside the code. 
+Performs both md5, sha256 and pychksum checksums on files
 >How to Use it  
 ```sh
 if __name__ == '__main__':  
