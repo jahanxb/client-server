@@ -1,6 +1,6 @@
 venv/
-dataset/
-received_data/
-sample_images/
+dataset/*.*
+received_data/*.*
+sample_images/*.*
 .ipynb_checkpoints
 dataset_1/

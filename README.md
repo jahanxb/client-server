@@ -62,7 +62,7 @@ if __name__ == '__main__':
 	plt.show()
 ```
 
-![Graph Image](https://github.com/jahanxb/client-server/blob/master/image.jpg?raw=true)
+![Graph Image](https://github.com/jahanxb/client-server/blob/master/concurrency_graph_with_delay.png?raw=true)
 
 ## References
 
