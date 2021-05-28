@@ -67,7 +67,7 @@ if __name__ == '__main__':
 >Here is the final result of the test scale on 100 files ranging from 8-10MB each in size 
 >and running on 1,2,4 and 8 concurrency rate
 
-![Graph Image Latest](https://github.com/jahanxb/client-server/blob/master/concurrency_graph_full.png?raw=true)
+![Graph Image Latest](https://github.com/jahanxb/client-server/blob/version-1.2.1/concurrency_graph_full.png?raw=true)
 
 Results indicates that the concurrency works better in 2 and 4 workers rate. 
 ## References
