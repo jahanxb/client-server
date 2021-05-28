@@ -23,11 +23,11 @@ if __name__ == '__main__':
 ## Server.py
 
 Server.py works as the server to accept files upload and give back response to client. For authentication client passes a string that is hardcoded in server.py to check the client authenticity. 
-Performs both md5, sha256 and pychksum checksums on files
+Performs sha256 and verifies source and server checksum
 
 ## Client.py
 Client.py sends the data to the server, it takes two arguments 'folder_destination' and 'concurrency_rate' for sending data to server. The Authentication code is hard coded inside the code. 
-Performs both md5, sha256 and pychksum checksums on files
+Performs  sha256 checksums on files number of files transfer is proportional to concurrency
 >How to Use it  
 ```sh
 if __name__ == '__main__':  
@@ -77,7 +77,9 @@ Results indicates that the concurrency works better in 2 and 4 workers rate.
  - https://realpython.com/python-sockets/
  - https://docs.python.org/3/library/socket.html
 
-
 ##Known Issues 
  - Checksum generated on two different directories might not match for some files. 
- - 
+  
+ 
+ 
+ 
