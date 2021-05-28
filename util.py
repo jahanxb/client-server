@@ -4,6 +4,7 @@ import redis
 import sys
 import base64
 import pycksum
+from filehash import FileHash
 
 
 def client_base64(fn):
@@ -25,16 +26,22 @@ class Util:
 
     @staticmethod
     def checksum(filename):
-        pyck = pycksum.Cksum()
+        # pyck = pycksum.Cksum()
         sha256 = Util.sha256_checksum(filename)
-        checksum_md5 = Util.md5_checksum(filename)
+        # checksum_md5 = Util.md5_checksum(filename)
+        return sha256
+
+    @staticmethod
+    def checksum_pyck(filename):
+        pyck = pycksum.Cksum()
+        # sha256 = Util.sha256_checksum(filename)
+        # checksum_md5 = Util.md5_checksum(filename)
         with open(filename, 'rb') as file:
             for b in file:
                 pyck._add(b)
         print("Checksum : ", pyck.get_cksum(), "size :", pyck.get_size(), "sha256",
-              sha256,
-              "md5", checksum_md5, "status:", True)
-
+              )
+        return pyck.get_size()
 
     @staticmethod
     def sha256_checksum(filename):
@@ -52,19 +59,12 @@ class Util:
                 checksum_md5.update(chunk)
         return checksum_md5.hexdigest()
 
-
     @staticmethod
     def sha256_checksum_base64(filebase):
         checksum_256 = hashlib.sha256()
         checksum_256.update(filebase)
         return checksum_256.hexdigest()
 
-    @staticmethod
-    def compare_checksum(sent_file, recv_file):
-        if sent_file == recv_file:
-            return True
-        else:
-            return False
 
     @staticmethod
     def reference_name():
@@ -95,11 +95,10 @@ class Util:
     @staticmethod
     def client_base64(fn):
         try:
-            with open(fn, "rb") as image_file:
-                encoded_string = base64.b64encode(image_file.read())
-                print("\n")
-                print(encoded_string.decode())
-            return encoded_string
+
+            with open(fn, "rb") as data:
+                encoded_string = base64.b64encode(data.read(4096))
+            return encoded_string.hex()
 
         except (IndexError, OSError):
             print("file encoded")
@@ -118,7 +117,7 @@ class Util:
             return True
 
     @staticmethod
-    def redis_new_entry(key, value=None):
+    def redis_new_entry(key, value):
         """
         :param insert_response:
         :return:
@@ -126,13 +125,20 @@ class Util:
         try:
             # redispass mNEbI3J8zYYxfgxV
             redisClient = redis.StrictRedis(host='127.0.0.1', port=6379)
-            insert_response = str(key)
+            insert_response = str(value)
             redisClient.set(key, str(insert_response))
             redisClient.expire(key, 5000)
         except Exception as e:
             print(f'Redis error {e}')
         finally:
             return dict({'redis_status': 'OK', 'key': key})
+
+    @staticmethod
+    def compare_checksums(client_chk, server_chk):
+        if str(client_chk) == str(server_chk):
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
@@ -166,5 +172,8 @@ if __name__ == '__main__':
     # g = a.sha256_checksum_base64(e)
     #
     # print(g)
-    a.checksum('dataset/5ee73ab1411b48a794eba13b3a505dcd7FYNJL5R.jpg')
-    a.checksum('dataset/0bd9017a570d4d72a5aaf090c9e04cf4DYF5Z52A.jpg')
+    # a.checksum('2 (1).jpg')
+    # a.checksum('2 (1).jpg')
+    # a.compare('dataset_1/2 (1).jpg','received_data/2 (1).jpg')
+    a.client_base64('dataset_1/2 (1).jpg')
+    a.client_base64('received_data/2 (1).jpg')

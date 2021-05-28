@@ -64,8 +64,6 @@ if __name__ == '__main__':
 	plt.show()
 ```
 
-![Graph Image](https://github.com/jahanxb/client-server/blob/master/concurrency_graph_with_delay.png?raw=true)
-
 >Here is the final result of the test scale on 100 files ranging from 8-10MB each in size 
 >and running on 1,2,4 and 8 concurrency rate
 
@@ -79,3 +77,8 @@ Results indicates that the concurrency works better in 2 and 4 workers rate.
  - https://realpython.com/python-sockets/
  - https://docs.python.org/3/library/socket.html
 
+
+##Known Issues 
+ - Checksum generated on two different directories might not match for some files. 
+ - Last Iterated file doesn't end operation on Server end until closes
+ - 

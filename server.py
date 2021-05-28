@@ -45,6 +45,7 @@ def receive_data(conn):
         received_payload += conn.recv(reamining_payload_size)
         reamining_payload_size = data_size - len(received_payload)
     payload = pickle.loads(received_payload)
+
     return (data_id, payload)
 
 
@@ -62,7 +63,7 @@ def do_something(conn_name, data):
     temp = data['data_number']
     time.sleep(0.1)
     # return 'Data number {} received on server'.format(data['data_number'])
-    return 'Image received on server'
+    return 'File received on server'
 
 
 def handle_client(conn, conn_name):
@@ -76,21 +77,38 @@ def handle_client(conn, conn_name):
         try:
 
             data_id, payload = receive_data(conn)
-            # if data identifier is image then save the image
-            if data_id == data_identifiers['image']:
-                print('---Recieved image too ---')
+            # if data identifier is FileData then save the File
+            if data_id == data_identifiers['filedata']:
+                print('---Recieved DataFile too ---')
 
-                filename = f'received_data/{Util.reference_name()}.jpg'
+                filename = f'{payload.get("filename")}'
 
-                cv2.imwrite(f'{filename}', payload)
+                received = payload.get('filedata')
+                #print(received)
+                file = open(f'received_data/{filename}','wb')
+                file.write(received)
                 print("filename on Server: ")
-                print(filename)
-                Util.checksum(filename)
-                send_data(conn, 'Image received on server')
+                print("filename from client: ", payload.get('filename'))
+
+                # `todo verify client checksum
+                server_sha = Util.checksum(f'received_data/{filename}')
+                verified_checksum = Util.compare_checksums(payload.get('sha256'),server_sha)
+                print('Checking Checksum .....')
+                if verified_checksum:
+                    print(server_sha)
+                    print(payload.get('sha256'))
+                    print("checksum is verified !")
+                else:
+                    print("Checksum not verified")
+                    with open('errors.log', 'a+') as error:
+                        error.write(f'{filename} checksum Server: {server_sha} checksum Client: {payload.get("sha256")}')
+                    error.close()
             # otherwise send the data to do something
             elif data_id == data_identifiers['data']:
                 response = do_something(conn_name, payload)
+
                 send_data(conn, response)
+
             else:
                 # if data is 'bye' then break the loop and client connection will be closed
                 if payload == 'bye':
@@ -103,12 +121,13 @@ def handle_client(conn, conn_name):
                     print(payload)
         except Exception as e:
             pass
-            #print('[WARNING]: There was some issue with connection Exception', e)
+            # print('[WARNING]: There was some issue with connection Exception', e)
     conn.close()
 
 
 # define identifiers for data which could be used to take certain action for data
-data_identifiers = {'info': 0, 'data': 1, 'image': 2}
+data_identifiers = {'info': 0, 'data': 1, 'filedata': 2,
+                    'filename': 3}
 # key to trust a connection
 key_message = 'auth_code'
 
