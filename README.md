@@ -80,5 +80,4 @@ Results indicates that the concurrency works better in 2 and 4 workers rate.
 
 ##Known Issues 
  - Checksum generated on two different directories might not match for some files. 
- - Last Iterated file doesn't end operation on Server end until closes
  - 
